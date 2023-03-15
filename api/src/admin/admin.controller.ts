@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  DefaultValuePipe,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -13,18 +16,22 @@ import {
   ApiOperation,
   ApiTags,
   ApiExtraModels,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { ApiMapResponse } from 'src/decorator/api.map.response';
+import { ApiPaginatedResponse } from 'src/decorator/api.paginated.response';
+import { pagination } from 'src/utils/response';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { OutAdminDto } from './dto/out-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { Admin } from './entities/admin.entity';
 
 @ApiTags('admin')
 @ApiBearerAuth()
-@ApiExtraModels(LoginResponseDto, OutAdminDto)
+@ApiExtraModels(LoginResponseDto, OutAdminDto, Admin)
 @Controller('admin')
 export class AdminController {
   constructor(
@@ -101,9 +108,40 @@ export class AdminController {
     return this.adminService.create(createAdminDto);
   }
 
+  @ApiOperation({
+    summary: '管理员列表',
+    operationId: 'adminList',
+  })
+  @ApiPaginatedResponse(Admin)
+  @ApiQuery({
+    required: false,
+    name: 'current',
+    description: '当前页码',
+    example: 1,
+  })
+  @ApiQuery({
+    required: false,
+    name: 'pageSize',
+    description: '每页数量',
+    example: 15,
+  })
+  @ApiQuery({
+    name: 'username',
+    description: '用户名',
+    example: 'litecrm',
+    required: false,
+  })
   @Get()
-  findAll() {
-    return this.adminService.findAll();
+  async findAll(
+    @Query('current', new DefaultValuePipe(1), ParseIntPipe) current: number,
+    @Query('pageSize', new DefaultValuePipe(15), ParseIntPipe) pageSize: number,
+    @Query('username') username: string,
+  ) {
+    const [adminList, total] = await this.adminService.findAll(
+      current,
+      pageSize,
+    );
+    return pagination(adminList, total, current, pageSize);
   }
 
   @Get(':id')

@@ -1,4 +1,15 @@
 declare namespace API {
+  type Admin = {
+    /** 用户id */
+    id: number;
+    /** 用户名 */
+    username: string;
+    /** 头像 */
+    avatar: string;
+    /** 密码 */
+    password: string;
+  };
+
   type AdminControllerFindOneParams = {
     id: string;
   };
@@ -9,6 +20,15 @@ declare namespace API {
 
   type AdminControllerUpdateParams = {
     id: string;
+  };
+
+  type adminListParams = {
+    /** 当前页码 */
+    current?: number;
+    /** 每页数量 */
+    pageSize?: number;
+    /** 用户名 */
+    username?: string;
   };
 
   type CreateAdminDto = {};
