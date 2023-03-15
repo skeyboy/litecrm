@@ -4,10 +4,24 @@ declare namespace API {
     id: number;
     /** 用户名 */
     username: string;
+    /** 邮箱 */
+    email?: string;
+    /** 手机号 */
+    mobile?: string;
+    /** 微信 */
+    wechat?: string;
+    /** QQ */
+    qq?: string;
     /** 头像 */
-    avatar: string;
+    avatar?: string;
     /** 密码 */
-    password: string;
+    password?: string;
+    /** 创建时间 */
+    createdAt: string;
+    /** 更新时间 */
+    updateAt: string;
+    /** 删除时间 */
+    deletedAt?: string;
   };
 
   type AdminControllerFindOneParams = {
