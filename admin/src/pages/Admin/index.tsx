@@ -43,6 +43,10 @@ function index() {
           return { startDate: value[0], endDate: value[1] + ' 23:59:59' };
         },
       },
+      // 自定义渲染
+      render(_,record: API.Admin){
+        return dayjs(record.createdAt).format('YYYY-MM-DD HH:MM')
+      }
     },
   ];
   return (
