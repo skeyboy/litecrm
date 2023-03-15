@@ -24,51 +24,64 @@ export class Admin {
 
   @ApiProperty({
     description: '邮箱',
-    default: '',
+    required: false,
+    default: '1355081829@qq.com',
   })
-  @Column()
-  eamil: string;
+  @Column({ nullable: true })
+  email: string;
 
   @ApiProperty({
     description: '手机号',
-    default: '',
+    required: false,
   })
-  @Column()
+  @Column({ nullable: true })
   mobile: string;
 
   @ApiProperty({
     description: '微信',
-    default: '',
+    required: false,
   })
-  @Column()
+  @Column({ nullable: true })
   wechat: string;
 
   @ApiProperty({
     description: 'QQ',
-    default: '',
+    default: '1355081829',
+    required: false,
   })
-  @Column()
+  @Column({ nullable: true })
   qq: string;
 
   @ApiProperty({
     description: '头像',
-    default: '',
+    required: false,
   })
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
   @ApiProperty({
     description: '密码',
+    required: false,
   })
   @Column({ select: false })
   password: string;
 
+  @ApiProperty({
+    description: '创建时间',
+  })
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty({
+    description: '更新时间',
+  })
   @UpdateDateColumn()
   updateAt: Date;
 
+  @ApiProperty({
+    description: '删除时间',
+    required: false,
+  })
   @DeleteDateColumn()
   deletedAt: Date;
 }

@@ -1,7 +1,12 @@
 import { adminList } from '@/services/litecrm/admin';
+import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer, ProColumns, ProTable } from '@ant-design/pro-components';
+import { Button } from 'antd';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import AddAdmin from './components/AddAdmin';
 function index() {
+  const [open, setOpen] = useState(false);
   const columns: ProColumns<API.Admin>[] = [
     {
       title: '用户名',
@@ -42,7 +47,17 @@ function index() {
   ];
   return (
     <PageContainer>
-      <ProTable columns={columns} request={adminList} />
+      <ProTable
+        columns={columns}
+        request={adminList}
+        key="id"
+        toolBarRender={() => [
+          <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => setOpen(true)}>
+            新增
+          </Button>,
+        ]}
+      />
+      <AddAdmin open={open} onCancel={() => setOpen(false)} />
     </PageContainer>
   );
 }
