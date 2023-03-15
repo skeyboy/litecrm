@@ -32,7 +32,10 @@ export const ApiMapResponse = <TModel extends Type<any>>(model?: TModel) => {
   return applyDecorators(
     ApiOkResponse({
       schema: {
-        allOf: model ? [{ $ref: getSchemaPath(model) }] : [],
+        allOf: [
+          { $ref: getSchemaPath(model) },
+          { $ref: getSchemaPath(ResponseMapDto) },
+        ],
       },
     }),
   );

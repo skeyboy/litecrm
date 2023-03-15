@@ -12,7 +12,7 @@ export class CustomerService {
     private customerRepository: Repository<Customer>,
   ) {}
   create(createCustomerDto: CreateCustomerDto) {
-    return 'This action adds a new customer';
+    return this.customerRepository.insert(createCustomerDto);
   }
 
   findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {

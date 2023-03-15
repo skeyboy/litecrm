@@ -22,7 +22,8 @@ import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { ApiPaginatedResponse } from '../decorator/api.paginated.response';
 import { Customer } from './entities/customer.entity';
-import { pagination } from '../utils/response';
+import { error, pagination, success } from '../utils/response';
+import { ApiMapResponse } from '../decorator/api.map.response';
 
 @ApiTags('customer')
 @ApiBearerAuth()
@@ -31,9 +32,18 @@ import { pagination } from '../utils/response';
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
+  @ApiOperation({
+    summary: '新增客户',
+    operationId: 'addCustomer',
+  })
+  @ApiMapResponse()
   @Post()
-  create(@Body() createCustomerDto: CreateCustomerDto) {
-    return this.customerService.create(createCustomerDto);
+  async create(@Body() createCustomerDto: CreateCustomerDto) {
+    const res = await this.customerService.create(createCustomerDto);
+    if (res.identifiers.length) {
+      return success();
+    }
+    return error();
   }
   @ApiOperation({
     summary: '客户列表',
