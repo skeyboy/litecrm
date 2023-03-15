@@ -11,7 +11,7 @@ export class AdminService {
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
   ) {}
   create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin';
+    return this.adminRepository.insert(createAdminDto);
   }
 
   findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {
