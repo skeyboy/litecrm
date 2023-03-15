@@ -6,6 +6,7 @@ import { ResponseArrayto } from './decorator/api.array.response';
 import { ResponseMapDto } from './decorator/api.map.response';
 import { PaginatedDto } from './decorator/api.paginated.response';
 import { HttpExceptionFilter } from './http-exception.filter';
+import configuration from './config/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,9 +25,9 @@ async function bootstrap() {
     extraModels: [PaginatedDto, ResponseMapDto, ResponseArrayto],
   });
   SwaggerModule.setup('api', app, document);
-
-  await app.listen(3000, () => {
-    console.log('http://localhost:3000');
+  const port = configuration().server.port;
+  await app.listen(configuration().server.port, () => {
+    console.log(`http://localhost:${port}\nhttp://localhost:${port}/api`);
   });
 }
 bootstrap();

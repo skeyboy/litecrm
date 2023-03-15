@@ -5,11 +5,16 @@ import { AdminModule } from './admin/admin.module';
 import { CustomerModule } from './customer/customer.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     JwtModule.register({
       secret: '1355081829@qq.com',
       secretOrPrivateKey: '1355081829@qq.com',
@@ -17,11 +22,11 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '1355081829@qq.com',
-      database: 'litecrm',
+      host: configuration().db.host,
+      port: configuration().db.port,
+      username: configuration().db.username,
+      password: configuration().db.password,
+      database: configuration().db.dbname,
       entities: [],
       synchronize: true,
       autoLoadEntities: true,

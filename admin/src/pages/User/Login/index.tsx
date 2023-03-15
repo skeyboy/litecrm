@@ -182,7 +182,7 @@ const Login: React.FC = () => {
             <ActionIcons key="icons" />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.LoginAdminDto);
           }}
         >
           <Tabs
@@ -335,12 +335,12 @@ const Login: React.FC = () => {
                   },
                 ]}
                 onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
-                    phone,
-                  });
-                  if (!result) {
-                    return;
-                  }
+                  // const result = await getFakeCaptcha({
+                  //   phone,
+                  // });
+                  // if (!result) {
+                  //   return;
+                  // }
                   message.success('获取验证码成功！验证码为：1234');
                 }}
               />
