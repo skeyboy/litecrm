@@ -14,7 +14,7 @@ export class AdminService {
     return 'This action adds a new admin';
   }
 
-  findAll(current = 1, pageSize = 1, username = '') {
+  findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {
     return this.adminRepository
       .createQueryBuilder()
       .offset((current - 1) * pageSize)
@@ -23,6 +23,20 @@ export class AdminService {
         new Brackets((q) => {
           if (username) {
             q.where('username like :username', { username: `%${username}%` });
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((q) => {
+          if (email) {
+            q.where('email like :email', { email: `%${email}%` });
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((q) => {
+          if (email) {
+            q.where('mobile like :mobile', { mobile: `%${mobile}%` });
           }
         }),
       )

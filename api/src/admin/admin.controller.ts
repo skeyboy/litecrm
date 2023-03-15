@@ -131,15 +131,32 @@ export class AdminController {
     example: 'litecrm',
     required: false,
   })
+  @ApiQuery({
+    name: 'email',
+    description: '邮箱',
+    example: '1355081829@qq.com',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'mobile',
+    description: '手机号',
+    example: '15701308875',
+    required: false,
+  })
   @Get()
   async findAll(
     @Query('current', new DefaultValuePipe(1), ParseIntPipe) current: number,
     @Query('pageSize', new DefaultValuePipe(15), ParseIntPipe) pageSize: number,
     @Query('username') username: string,
+    @Query('email') email: string,
+    @Query('mobile') mobile: string,
   ) {
     const [adminList, total] = await this.adminService.findAll(
       current,
       pageSize,
+      username,
+      email,
+      mobile,
     );
     return pagination(adminList, total, current, pageSize);
   }
