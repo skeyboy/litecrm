@@ -19,7 +19,17 @@ export class AdminService {
     return this.adminRepository.findOne({ where: { username } });
   }
 
-  findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {
+  findAll(
+    current = 1,
+    pageSize = 1,
+    username = '',
+    email = '',
+    mobile = '',
+    qq = '',
+    wechat = '',
+    startDate = '',
+    endDate = '',
+  ) {
     return this.adminRepository
       .createQueryBuilder()
       .offset((current - 1) * pageSize)
@@ -42,8 +52,32 @@ export class AdminService {
       )
       .andWhere(
         new Brackets((q) => {
-          if (email) {
+          if (mobile) {
             q.where('mobile like :mobile', { mobile: `%${mobile}%` });
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((q) => {
+          if (qq) {
+            q.where('qq like :qq', { qq: `%${qq}%` });
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((q) => {
+          if (wechat) {
+            q.where('wechat like :wechat', { wechat: `%${wechat}%` });
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((q) => {
+          if (startDate && endDate) {
+            q.where('createdAt between :startDate and :endDate', {
+              startDate,
+              endDate,
+            });
           }
         }),
       )

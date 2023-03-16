@@ -170,6 +170,18 @@ export class AdminController {
     example: '15701308875',
     required: false,
   })
+  @ApiQuery({
+    name: 'qq',
+    description: 'qq',
+    example: '15701308875',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'wechat',
+    description: '微信',
+    example: '15701308875',
+    required: false,
+  })
   @Get()
   async findAll(
     @Query('current', new DefaultValuePipe(1), ParseIntPipe) current: number,
@@ -177,6 +189,10 @@ export class AdminController {
     @Query('username') username: string,
     @Query('email') email: string,
     @Query('mobile') mobile: string,
+    @Query('qq') qq: string,
+    @Query('wechat') wechat: string,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
   ) {
     const [adminList, total] = await this.adminService.findAll(
       current,
@@ -184,6 +200,10 @@ export class AdminController {
       username,
       email,
       mobile,
+      qq,
+      wechat,
+      startDate,
+      endDate,
     );
     return pagination(adminList, total, current, pageSize);
   }

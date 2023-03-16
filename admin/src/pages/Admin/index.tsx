@@ -41,10 +41,10 @@ function index() {
       dataIndex: 'createdAt',
       valueType: 'dateRange',
       //日期选择器给默认值
-      initialValue: [
-        dayjs(new Date()).format('YYYY-MM-DD'),
-        dayjs(new Date()).format('YYYY-MM-DD'),
-      ],
+      // initialValue: [
+      //   dayjs(new Date()).format('YYYY-MM-DD'),
+      //   dayjs(new Date()).format('YYYY-MM-DD'),
+      // ],
       search: {
         transform: (value: any) => {
           return {startDate: value[0], endDate: value[1] + ' 23:59:59'};

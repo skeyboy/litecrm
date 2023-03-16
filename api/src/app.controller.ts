@@ -26,6 +26,7 @@ export class AppController {
     await this.initCustomer();
     return success();
   }
+
   async initAdmin() {
     const saltOrRounds = 10;
     for (let i = 0; i < 50; i++) {
@@ -36,12 +37,15 @@ export class AppController {
         mobile: faker.phone.number(),
         email: faker.internet.email(),
         password: hash,
+        qq: faker.internet.userName(),
+        wechat: faker.internet.userName(),
       };
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       await this.adminService.create(admin);
     }
   }
+
   async initCustomer() {
     for (let i = 0; i < 50; i++) {
       const customer = {
