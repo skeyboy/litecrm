@@ -25,12 +25,9 @@ export async function adminList(
   });
 }
 
-/** 此处后端没有提供注释 POST /admin/admin */
-export async function AdminControllerCreate(
-  body: API.CreateAdminDto,
-  options?: { [key: string]: any },
-) {
-  return request<any>('/admin/admin', {
+/** 新增 POST /admin/admin */
+export async function addAdmin(body: API.CreateAdminDto, options?: { [key: string]: any }) {
+  return request<API.ResponseMapDto & { data?: Record<string, any> }>('/admin/admin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -54,14 +51,14 @@ export async function AdminControllerFindOne(
   });
 }
 
-/** 此处后端没有提供注释 DELETE /admin/admin/${param0} */
-export async function AdminControllerRemove(
+/** 删除管理员 DELETE /admin/admin/${param0} */
+export async function deleteAdmin(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.AdminControllerRemoveParams,
+  params: API.deleteAdminParams,
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<any>(`/admin/admin/${param0}`, {
+  return request<API.ResponseMapDto & { data?: Record<string, any> }>(`/admin/admin/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
     ...(options || {}),

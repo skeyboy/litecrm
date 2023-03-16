@@ -10,22 +10,25 @@ export class AdminService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
   ) {}
+
   create(createAdminDto: CreateAdminDto) {
     return this.adminRepository.insert(createAdminDto);
   }
 
-    findByUsername(username) {
-      return this.adminRepository.findOne({where:{username}})
-    }
+  findByUsername(username) {
+    return this.adminRepository.findOne({ where: { username } });
+  }
 
   findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {
     return this.adminRepository
       .createQueryBuilder()
       .offset((current - 1) * pageSize)
       .limit(pageSize)
+      .orderBy('id', 'DESC')
       .where(
         new Brackets((q) => {
           if (username) {
+            console.log(username);
             q.where('username like :username', { username: `%${username}%` });
           }
         }),
@@ -48,7 +51,7 @@ export class AdminService {
   }
 
   findOne(id: number) {
-    return this.adminRepository.findOne({where:{id}})
+    return this.adminRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateAdminDto: UpdateAdminDto) {
@@ -56,6 +59,6 @@ export class AdminService {
   }
 
   remove(id: number) {
-    return this.adminRepository.softDelete(id)
+    return this.adminRepository.softDelete(id);
   }
 }

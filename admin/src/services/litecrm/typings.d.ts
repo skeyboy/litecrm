@@ -28,10 +28,6 @@ declare namespace API {
     id: string;
   };
 
-  type AdminControllerRemoveParams = {
-    id: string;
-  };
-
   type AdminControllerUpdateParams = {
     id: string;
   };
@@ -49,7 +45,16 @@ declare namespace API {
     mobile?: string;
   };
 
-  type CreateAdminDto = {};
+  type CreateAdminDto = {
+    /** 用户名 */
+    username: string;
+    /** 密码 */
+    password: string;
+    /** 邮箱 */
+    email?: string;
+    /** 手机号 */
+    mobile?: string;
+  };
 
   type CreateCustomerDto = {
     /** 用户名 */
@@ -106,6 +111,11 @@ declare namespace API {
     startDate?: any;
     /** 结束时间:YYYY-MM-DD HH:mm:SS */
     endDate?: any;
+  };
+
+  type deleteAdminParams = {
+    /** 管理员id */
+    id: number;
   };
 
   type deleteCustomerParams = {

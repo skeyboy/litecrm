@@ -17,10 +17,11 @@ import {
   ApiTags,
   ApiExtraModels,
   ApiQuery,
+  ApiParam,
 } from '@nestjs/swagger';
 import { ApiMapResponse } from 'src/decorator/api.map.response';
 import { ApiPaginatedResponse } from 'src/decorator/api.paginated.response';
-import {error, pagination, success} from 'src/utils/response';
+import { error, pagination, success } from 'src/utils/response';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
@@ -40,7 +41,6 @@ export class AdminController {
     private readonly jwtService: JwtService,
   ) {}
 
-
   @ApiOperation({
     summary: '登录',
     operationId: 'login',
@@ -55,7 +55,12 @@ export class AdminController {
       },
       { secret: '1355081829@qq.com', expiresIn: '24h' },
     );
-    return success({ status: 'ok', type: 'account', currentAuthority: 'admin', token });
+    return success({
+      status: 'ok',
+      type: 'account',
+      currentAuthority: 'admin',
+      token,
+    });
   }
 
   @ApiOperation({
@@ -68,7 +73,7 @@ export class AdminController {
     return success({
       name: 'Serati Ma',
       avatar:
-          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
       userid: '00000001',
       email: 'antdesign@alipay.com',
       signature: '海纳百川，有容乃大',
@@ -92,7 +97,7 @@ export class AdminController {
       },
       address: '西湖区工专路 77 号',
       phone: '0752-268888888',
-    })
+    });
   }
 
   @ApiOperation({
@@ -105,25 +110,29 @@ export class AdminController {
     return { data: {}, success: true };
   }
 
-
   @ApiOperation({
-    summary:'新增',
-    operationId:'addAdmin'
+    summary: '新增',
+    operationId: 'addAdmin',
   })
   @ApiMapResponse()
   @Post()
   async create(@Body() createAdminDto: CreateAdminDto) {
-    const admin=await this.adminService.findByUsername(createAdminDto.username)
+    const admin = await this.adminService.findByUsername(
+      createAdminDto.username,
+    );
     if (admin) {
-      return error('用户已经存在')
+      return error('用户已经存在');
     }
     const saltOrRounds = 10;
-    createAdminDto.password=await bcrypt.hash( createAdminDto.password, saltOrRounds);
-    const res=await this.adminService.create(createAdminDto);
+    createAdminDto.password = await bcrypt.hash(
+      createAdminDto.password,
+      saltOrRounds,
+    );
+    const res = await this.adminService.create(createAdminDto);
     if (res.identifiers.length > 0) {
-      return success()
+      return success();
     }
-    return error()
+    return error();
   }
 
   @ApiOperation({
@@ -190,23 +199,27 @@ export class AdminController {
   }
 
   @ApiOperation({
-    summary:'删除管理员',
-    operationId:'deleteAdmin'
+    summary: '删除管理员',
+    operationId: 'deleteAdmin',
+  })
+  @ApiParam({
+    name: 'id',
+    description: '管理员id',
   })
   @ApiMapResponse()
   @Delete(':id')
-  async remove(@Param('id',ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     if (id === 1) {
-      return error('超级管理员不允许删除')
+      return error('超级管理员不允许删除');
     }
-    const admin=await this.adminService.findOne(id);
+    const admin = await this.adminService.findOne(id);
     if (!admin) {
-      return error('管理员不存在')
+      return error('管理员不存在');
     }
-    const {affected}=await this.adminService.remove(+id);
+    const { affected } = await this.adminService.remove(+id);
     if (affected > 0) {
-      return success('删除成功')
+      return success('删除成功');
     }
-    return error('删除失败')
+    return error('删除失败');
   }
 }
