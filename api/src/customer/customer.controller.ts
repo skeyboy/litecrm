@@ -99,8 +99,21 @@ export class CustomerController {
     return this.customerService.update(+id, updateCustomerDto);
   }
 
+  @ApiOperation({
+    summary: '删除客户',
+    operationId: 'deleteCustomer',
+  })
+  @ApiMapResponse()
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
+  async remove(@Param('id',ParseIntPipe) id: number) {
+    const customer=await this.customerService.findOne(id)
+    if (!customer) {
+      return error('用户不存在')
+    }
+    const {affected}=await  this.customerService.remove(+id);
+    if (affected > 0) {
+      return success('删除成功')
+    }
+    return error('删除失败')
   }
 }

@@ -45,7 +45,7 @@ export class CustomerService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} customer`;
+    return this.customerRepository.findOne({where:{id}})
   }
 
   update(id: number, updateCustomerDto: UpdateCustomerDto) {
@@ -53,6 +53,6 @@ export class CustomerService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} customer`;
+    return this.customerRepository.softDelete(id)
   }
 }
