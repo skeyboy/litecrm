@@ -13,7 +13,7 @@ import {
 import {
   ApiBearerAuth,
   ApiExtraModels,
-  ApiOperation,
+  ApiOperation, ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
@@ -86,9 +86,23 @@ export class CustomerController {
     return pagination(dataList, total, current, pageSize);
   }
 
+  @ApiOperation({
+    summary: '客户详情',
+    operationId: 'getCustomer',
+  })
+  @ApiParam({
+    name:'id',
+    example:1,
+    description:'客户id'
+  })
+  @ApiMapResponse(Customer)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
+  async findOne(@Param('id',ParseIntPipe) id: number) {
+    const customer=await this.customerService.findOne(id)
+    if (!customer) {
+      return error('用户不存在')
+    }
+    return success(customer)
   }
 
   @Patch(':id')
@@ -102,6 +116,11 @@ export class CustomerController {
   @ApiOperation({
     summary: '删除客户',
     operationId: 'deleteCustomer',
+  })
+  @ApiParam({
+    name:'id',
+    example:1,
+    description:'客户id'
   })
   @ApiMapResponse()
   @Delete(':id')

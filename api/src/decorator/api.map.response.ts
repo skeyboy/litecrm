@@ -29,15 +29,21 @@ export class ResponseMapDto {
 }
 
 export const ApiMapResponse = <TModel extends Type<any>>(model?: TModel) => {
-  const allOf = [{ $ref: getSchemaPath(ResponseMapDto) }];
-  if (model) {
-    allOf.push({ $ref: getSchemaPath(model) });
-  }
   return applyDecorators(
-    ApiOkResponse({
-      schema: {
-        allOf,
-      },
-    }),
+      ApiOkResponse({
+        schema: {
+          allOf: [
+            { $ref: getSchemaPath(ResponseMapDto) },
+            {
+              properties: {
+                data: {
+                  type: 'object',
+                  allOf: model ? [{ $ref: getSchemaPath(model) }] : [],
+                },
+              },
+            },
+          ],
+        },
+      }),
   );
 };
