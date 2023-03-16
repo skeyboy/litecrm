@@ -14,6 +14,10 @@ export class AdminService {
     return this.adminRepository.insert(createAdminDto);
   }
 
+    findByUsername(username) {
+      return this.adminRepository.findOne({where:{username}})
+    }
+
   findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {
     return this.adminRepository
       .createQueryBuilder()

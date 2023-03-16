@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { ApiMapResponse } from 'src/decorator/api.map.response';
 import { ApiPaginatedResponse } from 'src/decorator/api.paginated.response';
-import {pagination, success} from 'src/utils/response';
+import {error, pagination, success} from 'src/utils/response';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
@@ -28,6 +28,7 @@ import { LoginResponseDto } from './dto/login-response.dto';
 import { OutAdminDto } from './dto/out-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Admin } from './entities/admin.entity';
+import * as bcrypt from 'bcrypt';
 
 @ApiTags('admin')
 @ApiBearerAuth()
@@ -38,6 +39,8 @@ export class AdminController {
     private readonly adminService: AdminService,
     private readonly jwtService: JwtService,
   ) {}
+
+
   @ApiOperation({
     summary: '登录',
     operationId: 'login',
@@ -101,9 +104,26 @@ export class AdminController {
   outLogin() {
     return { data: {}, success: true };
   }
+
+
+  @ApiOperation({
+    summary:'新增',
+    operationId:'addAdmin'
+  })
+  @ApiMapResponse()
   @Post()
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+  async create(@Body() createAdminDto: CreateAdminDto) {
+    const admin=await this.adminService.findByUsername(createAdminDto.username)
+    if (admin) {
+      return error('用户已经存在')
+    }
+    const saltOrRounds = 10;
+    createAdminDto.password=await bcrypt.hash( createAdminDto.password, saltOrRounds);
+    const res=await this.adminService.create(createAdminDto);
+    if (res.identifiers.length > 0) {
+      return success()
+    }
+    return error()
   }
 
   @ApiOperation({
