@@ -16,13 +16,13 @@ import { ApiOkResponse, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 export class ResponseMapDto {
   @ApiProperty({
-    description: '状态：true表示成功；false表示失败',
+    description: 'true表示接口请求成功，不代表业务逻辑成成',
     type: 'boolean',
     default: true,
   })
   success: boolean;
   @ApiProperty({
-    description: '提示信息',
+    description: '提示信息：有错误才会有提示，没有错误为空',
     required: false,
   })
   errorMessage: string;
@@ -30,20 +30,20 @@ export class ResponseMapDto {
 
 export const ApiMapResponse = <TModel extends Type<any>>(model?: TModel) => {
   return applyDecorators(
-      ApiOkResponse({
-        schema: {
-          allOf: [
-            { $ref: getSchemaPath(ResponseMapDto) },
-            {
-              properties: {
-                data: {
-                  type: 'object',
-                  allOf: model ? [{ $ref: getSchemaPath(model) }] : [],
-                },
+    ApiOkResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(ResponseMapDto) },
+          {
+            properties: {
+              data: {
+                type: 'object',
+                allOf: model ? [{ $ref: getSchemaPath(model) }] : [],
               },
             },
-          ],
-        },
-      }),
+          },
+        ],
+      },
+    }),
   );
 };

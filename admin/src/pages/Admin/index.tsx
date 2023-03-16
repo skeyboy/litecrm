@@ -62,7 +62,7 @@ function index() {
         <Button type={'primary'} key={'action'}>管理</Button>,
         <Button type={'primary'} danger key={'delete'} onClick={async () => {
           const res = await deleteAdmin({id: record.id})
-          if (res.success) {
+          if (!res.errorMessage) {
             await actionRef.current?.reload()
             message.success('删除成功')
           } else {

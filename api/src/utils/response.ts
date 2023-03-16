@@ -1,17 +1,17 @@
 export const success = (data = {}, message = 'success') => {
   return {
     success: true,
-    errorMessage: message,
     data,
   };
 };
 export const error = (message = 'error', data = {}) => {
   return {
-    success: false,
+    success: true,
     errorMessage: message,
     data,
   };
 };
+
 export function pagination<T>(
   data: T[],
   total: number,
