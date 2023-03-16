@@ -24,6 +24,7 @@ import { ApiPaginatedResponse } from '../decorator/api.paginated.response';
 import { Customer } from './entities/customer.entity';
 import { error, pagination, success } from '../utils/response';
 import { ApiMapResponse } from '../decorator/api.map.response';
+import {ApiPaginate} from "../decorator/api.paginate.descorator";
 
 @ApiTags('customer')
 @ApiBearerAuth()
@@ -50,18 +51,7 @@ export class CustomerController {
     operationId: 'customerList',
   })
   @ApiPaginatedResponse(Customer)
-  @ApiQuery({
-    required: false,
-    name: 'current',
-    description: '当前页码',
-    example: 1,
-  })
-  @ApiQuery({
-    required: false,
-    name: 'pageSize',
-    description: '每页数量',
-    example: 15,
-  })
+  @ApiPaginate()
   @ApiQuery({
     name: 'username',
     description: '用户名',
@@ -71,13 +61,11 @@ export class CustomerController {
   @ApiQuery({
     name: 'email',
     description: '邮箱',
-    example: '1355081829@qq.com',
     required: false,
   })
   @ApiQuery({
     name: 'mobile',
     description: '手机号',
-    example: '15701308875',
     required: false,
   })
   @Get()
