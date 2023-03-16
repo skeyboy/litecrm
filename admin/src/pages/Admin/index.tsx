@@ -6,9 +6,8 @@ import dayjs from 'dayjs';
 import {useRef, useState} from 'react';
 import AddAdmin from './components/AddAdmin';
 
-function index() {
+function Index() {
   const actionRef = useRef<ActionType>();
-
   const [open, setOpen] = useState(false);
   const columns: ProColumns<API.Admin>[] = [
     {
@@ -93,4 +92,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

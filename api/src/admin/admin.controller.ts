@@ -120,6 +120,7 @@ export class AdminController {
     const admin = await this.adminService.findByUsername(
       createAdminDto.username,
     );
+    console.log(admin, createAdminDto);
     if (admin) {
       return error('用户已经存在');
     }

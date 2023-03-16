@@ -11,7 +11,7 @@ import configuration from './config/configuration';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('/admin');
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
@@ -30,4 +30,5 @@ async function bootstrap() {
     console.log(`http://localhost:${port}\nhttp://localhost:${port}/api`);
   });
 }
+
 bootstrap();
