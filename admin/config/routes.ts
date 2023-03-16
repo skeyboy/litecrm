@@ -44,4 +44,10 @@ export default [
     layout: false,
     component: './404',
   },
+  {
+    path: '/customer',
+    component: './Customer',
+    icon: 'crown',
+    name: 'customer'
+  }
 ];
