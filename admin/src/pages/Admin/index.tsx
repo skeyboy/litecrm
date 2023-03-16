@@ -56,10 +56,11 @@ function index() {
       }
     },
     {
-      title: '微信',
+      title: '操作',
       valueType: 'option',
+      key: 'option',
       render: (_, record) => [
-        <Button type={'primary'} key={'action'}>管理</Button>,
+        <Button type={'primary'} key={'edit'}>编辑</Button>,
         <Button type={'primary'} danger key={'delete'} onClick={async () => {
           const res = await deleteAdmin({id: record.id})
           if (!res.errorMessage) {
@@ -77,7 +78,6 @@ function index() {
   return (
     <PageContainer>
       <ProTable
-        pagination={{position: ['bottomCenter']}}
         actionRef={actionRef}
         columns={columns}
         request={adminList}
