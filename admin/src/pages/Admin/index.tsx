@@ -54,7 +54,7 @@ function index() {
       <ProTable
         columns={columns}
         request={adminList}
-        key="id"
+        rowKey="id"
         toolBarRender={() => [
           <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => setOpen(true)}>
             新增
