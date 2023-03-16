@@ -16,7 +16,7 @@ export class AdminService {
   }
 
   findByUsername(username) {
-    return this.adminRepository.findOne({ where: { username } });
+    return this.adminRepository.findOneBy({ username });
   }
 
   findAll(

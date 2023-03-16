@@ -5,11 +5,12 @@ import {Button, message} from 'antd';
 import dayjs from 'dayjs';
 import {useRef, useState} from 'react';
 import AddAdmin from './components/AddAdmin';
+import UpdateAdmin, {UpdateProps} from "@/pages/Admin/components/UpdateAdmin";
 
-function index() {
+function Index() {
   const actionRef = useRef<ActionType>();
-
   const [open, setOpen] = useState(false);
+  const [update, setUpdate] = useState<UpdateProps>({open: false} as UpdateProps)
   const columns: ProColumns<API.Admin>[] = [
     {
       title: 'ID',
@@ -60,7 +61,9 @@ function index() {
       valueType: 'option',
       key: 'option',
       render: (_, record) => [
-        <Button type={'primary'} key={'edit'}>编辑</Button>,
+        <Button type={'primary'} key={'edit'} onClick={() => {
+          setUpdate({open: true, ...record})
+        }}>编辑</Button>,
         <Button type={'primary'} danger key={'delete'} onClick={async () => {
           const res = await deleteAdmin({id: record.id})
           if (!res.errorMessage) {
@@ -77,6 +80,9 @@ function index() {
   ];
   return (
     <PageContainer>
+      <UpdateAdmin {...update} onCancel={() => {
+        setUpdate({...update, open: false})
+      }}/>
       <ProTable
         actionRef={actionRef}
         columns={columns}
@@ -93,4 +99,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;
