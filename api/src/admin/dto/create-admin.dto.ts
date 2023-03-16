@@ -5,6 +5,8 @@ export class CreateAdminDto {
   @ApiProperty({
     description: '用户名',
     example: 'litecrm',
+    minLength: 2,
+    maxLength: 12,
   })
   @Length(2, 12, { message: '用户名必须在2-12个字符之间' })
   username: string;
@@ -19,14 +21,12 @@ export class CreateAdminDto {
 
   @ApiProperty({
     description: '邮箱',
-    required: false,
   })
   @IsEmail({}, { message: '邮箱格式不合法' })
   email: string;
 
   @ApiProperty({
     description: '手机号',
-    required: false,
   })
   @IsMobilePhone('zh-CN', null, { message: '手机号格式错误' })
   mobile: string;
