@@ -189,8 +189,24 @@ export class AdminController {
     return this.adminService.update(+id, updateAdminDto);
   }
 
+  @ApiOperation({
+    summary:'删除管理员',
+    operationId:'deleteAdmin'
+  })
+  @ApiMapResponse()
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+  async remove(@Param('id',ParseIntPipe) id: number) {
+    if (id === 1) {
+      return error('超级管理员不允许删除')
+    }
+    const admin=await this.adminService.findOne(id);
+    if (!admin) {
+      return error('管理员不存在')
+    }
+    const {affected}=await this.adminService.remove(+id);
+    if (affected > 0) {
+      return success('删除成功')
+    }
+    return error('删除失败')
   }
 }

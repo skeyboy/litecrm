@@ -48,7 +48,7 @@ export class AdminService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} admin`;
+    return this.adminRepository.findOne({where:{id}})
   }
 
   update(id: number, updateAdminDto: UpdateAdminDto) {
@@ -56,6 +56,6 @@ export class AdminService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} admin`;
+    return this.adminRepository.softDelete(id)
   }
 }
