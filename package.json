@@ -1,0 +1,29 @@
+{
+  "name": "litecrm",
+  "version": "1.0.0",
+  "description": "litecrm",
+  "private": true,
+  "keywords": [
+    "litecrm",
+    "crm",
+    "nestjs",
+    "typeorm",
+    "react"
+  ],
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start:api": "pnpm run -C api start:dev",
+    "start:admin": "pnpm run -C admin start",
+    "openapi": "pnpm run -C admin openapi",
+    "desktop:dev": "pnpm run -C desktop start:dev",
+    "build:api": "pnpm run -C api build",
+    "build:admin": "pnpm run -C admin build"
+  },
+  "devDependencies": {
+    "husky": "^7.0.4"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.7"
+  }
+}
