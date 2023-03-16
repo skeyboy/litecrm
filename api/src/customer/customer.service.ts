@@ -11,11 +11,20 @@ export class CustomerService {
     @InjectRepository(Customer)
     private customerRepository: Repository<Customer>,
   ) {}
+
   create(createCustomerDto: CreateCustomerDto) {
     return this.customerRepository.insert(createCustomerDto);
   }
 
-  findAll(current = 1, pageSize = 1, username = '', email = '', mobile = '') {
+  findAll(
+    current = 1,
+    pageSize = 1,
+    username = '',
+    email = '',
+    mobile = '',
+    startDate = '',
+    endDate = '',
+  ) {
     return this.customerRepository
       .createQueryBuilder()
       .offset((current - 1) * pageSize)
@@ -36,8 +45,18 @@ export class CustomerService {
       )
       .andWhere(
         new Brackets((q) => {
-          if (email) {
+          if (mobile) {
             q.where('mobile like :mobile', { mobile: `%${mobile}%` });
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((q) => {
+          if (startDate && endDate) {
+            q.where('createdAt between :startDate and :endDate', {
+              startDate,
+              endDate,
+            });
           }
         }),
       )
@@ -45,7 +64,7 @@ export class CustomerService {
   }
 
   findOne(id: number) {
-    return this.customerRepository.findOne({where:{id}})
+    return this.customerRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateCustomerDto: UpdateCustomerDto) {
@@ -53,6 +72,6 @@ export class CustomerService {
   }
 
   remove(id: number) {
-    return this.customerRepository.softDelete(id)
+    return this.customerRepository.softDelete(id);
   }
 }

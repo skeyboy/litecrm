@@ -13,7 +13,8 @@ import {
 import {
   ApiBearerAuth,
   ApiExtraModels,
-  ApiOperation, ApiParam,
+  ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
@@ -24,7 +25,7 @@ import { ApiPaginatedResponse } from '../decorator/api.paginated.response';
 import { Customer } from './entities/customer.entity';
 import { error, pagination, success } from '../utils/response';
 import { ApiMapResponse } from '../decorator/api.map.response';
-import {ApiPaginate} from "../decorator/api.paginate.descorator";
+import { ApiPaginate } from '../decorator/api.paginate.descorator';
 
 @ApiTags('customer')
 @ApiBearerAuth()
@@ -46,6 +47,7 @@ export class CustomerController {
     }
     return error();
   }
+
   @ApiOperation({
     summary: '客户列表',
     operationId: 'customerList',
@@ -75,6 +77,8 @@ export class CustomerController {
     @Query('username') username: string,
     @Query('email') email: string,
     @Query('mobile') mobile: string,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
   ) {
     const [dataList, total] = await this.customerService.findAll(
       current,
@@ -82,6 +86,8 @@ export class CustomerController {
       username,
       email,
       mobile,
+      startDate,
+      endDate,
     );
     return pagination(dataList, total, current, pageSize);
   }
@@ -91,18 +97,18 @@ export class CustomerController {
     operationId: 'getCustomer',
   })
   @ApiParam({
-    name:'id',
-    example:1,
-    description:'客户id'
+    name: 'id',
+    example: 1,
+    description: '客户id',
   })
   @ApiMapResponse(Customer)
   @Get(':id')
-  async findOne(@Param('id',ParseIntPipe) id: number) {
-    const customer=await this.customerService.findOne(id)
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const customer = await this.customerService.findOne(id);
     if (!customer) {
-      return error('用户不存在')
+      return error('用户不存在');
     }
-    return success(customer)
+    return success(customer);
   }
 
   @Patch(':id')
@@ -118,21 +124,21 @@ export class CustomerController {
     operationId: 'deleteCustomer',
   })
   @ApiParam({
-    name:'id',
-    example:1,
-    description:'客户id'
+    name: 'id',
+    example: 1,
+    description: '客户id',
   })
   @ApiMapResponse()
   @Delete(':id')
-  async remove(@Param('id',ParseIntPipe) id: number) {
-    const customer=await this.customerService.findOne(id)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const customer = await this.customerService.findOne(id);
     if (!customer) {
-      return error('用户不存在')
+      return error('用户不存在');
     }
-    const {affected}=await  this.customerService.remove(+id);
+    const { affected } = await this.customerService.remove(+id);
     if (affected > 0) {
-      return success('删除成功')
+      return success('删除成功');
     }
-    return error('删除失败')
+    return error('删除失败');
   }
 }
