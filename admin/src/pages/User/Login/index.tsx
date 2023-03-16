@@ -84,7 +84,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<API.LoginResponseDto>({} as API.LoginResponseDto);
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -117,8 +117,8 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginAdminDto) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
-
+      const res = await login({ ...values, type });
+const msg=res.data as unknown as API.LoginResponseDto
       if (msg.status === 'ok') {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',

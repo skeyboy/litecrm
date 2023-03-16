@@ -89,7 +89,7 @@ export async function AdminControllerUpdate(
 
 /** 当前登录用户 GET /admin/admin/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<any>('/admin/admin/currentUser', {
+  return request<API.ResponseMapDto & { data?: API.Admin }>('/admin/admin/currentUser', {
     method: 'GET',
     ...(options || {}),
   });
@@ -97,7 +97,7 @@ export async function currentUser(options?: { [key: string]: any }) {
 
 /** 登录 POST /admin/admin/login */
 export async function login(body: API.LoginAdminDto, options?: { [key: string]: any }) {
-  return request<API.LoginResponseDto>('/admin/admin/login', {
+  return request<API.ResponseMapDto & { data?: API.LoginResponseDto }>('/admin/admin/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export async function login(body: API.LoginAdminDto, options?: { [key: string]: 
 
 /** 退出 POST /admin/admin/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<API.OutAdminDto>('/admin/admin/outLogin', {
+  return request<API.ResponseMapDto & { data?: API.OutAdminDto }>('/admin/admin/outLogin', {
     method: 'POST',
     ...(options || {}),
   });

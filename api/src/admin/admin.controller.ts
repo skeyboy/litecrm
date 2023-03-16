@@ -52,7 +52,7 @@ export class AdminController {
       },
       { secret: '1355081829@qq.com', expiresIn: '24h' },
     );
-    return { status: 'ok', type: 'account', currentAuthority: 'admin', token };
+    return success({ status: 'ok', type: 'account', currentAuthority: 'admin', token });
   }
 
   @ApiOperation({

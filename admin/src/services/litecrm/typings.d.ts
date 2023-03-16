@@ -43,22 +43,79 @@ declare namespace API {
     pageSize?: number;
     /** 用户名 */
     username?: string;
+    /** 邮箱 */
+    email?: string;
+    /** 手机号 */
+    mobile?: string;
   };
 
   type CreateAdminDto = {};
 
-  type CreateCustomerDto = {};
-
-  type CustomerControllerFindOneParams = {
-    id: string;
+  type CreateCustomerDto = {
+    /** 用户名 */
+    username: string;
+    /** 邮箱 */
+    email?: string;
+    /** 手机号 */
+    mobile?: string;
+    /** qq */
+    qq?: string;
+    /** 微信 */
+    wechat?: string;
   };
 
-  type CustomerControllerRemoveParams = {
-    id: string;
+  type Customer = {
+    /** 用户id */
+    id: number;
+    /** 用户名 */
+    username: string;
+    /** 邮箱 */
+    email?: string;
+    /** 手机号 */
+    mobile?: string;
+    /** 微信 */
+    wechat?: string;
+    /** QQ */
+    qq?: string;
+    /** 头像 */
+    avatar?: string;
+    /** 创建时间 */
+    createdAt: string;
+    /** 更新时间 */
+    updateAt: string;
+    /** 删除时间 */
+    deletedAt?: string;
   };
 
   type CustomerControllerUpdateParams = {
     id: string;
+  };
+
+  type customerListParams = {
+    /** 当前页码 */
+    current?: number;
+    /** 每页数量 */
+    pageSize?: number;
+    /** 用户名 */
+    username?: string;
+    /** 邮箱 */
+    email?: string;
+    /** 手机号 */
+    mobile?: string;
+    /** 开始时间:YYYY-MM-DD HH:mm:SS */
+    startDate?: any;
+    /** 结束时间:YYYY-MM-DD HH:mm:SS */
+    endDate?: any;
+  };
+
+  type deleteCustomerParams = {
+    /** 客户id */
+    id: number;
+  };
+
+  type getCustomerParams = {
+    /** 客户id */
+    id: number;
   };
 
   type LoginAdminDto = {
